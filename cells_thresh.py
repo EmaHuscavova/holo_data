@@ -69,6 +69,18 @@ labels_res = measure.label(local_max*h_max)
 seg_res = segmentation.watershed(-img_med, markers=labels_res, mask=img_morph)
 plt.imshow(segmentation.mark_boundaries(img_med, seg_res))
 
+markers = np.zeros(img_med.shape, dtype=np.uint)
+markers[img_morph == 0] = 1
+markers[local_max*h_max != 0] = 2
+markers[387,228] = 2
+plt.imshow(markers)
+
+# random walker
+seg_rwalker = segmentation.random_walker(img_med*img_morph, labels_res, beta=10)
+plt.imshow(segmentation.mark_boundaries(img_med, seg_rwalker))
+
+
+
 
 row, col = 1,3
 fig = plt.figure(figsize=(17, 12))
